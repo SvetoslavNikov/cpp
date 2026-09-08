@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 using namespace std;
@@ -7,30 +8,30 @@ class Worker {
     string name;
     int level;
     string boss;
-
 protected:
     vector<double> salaries;
 
 public:
-    explicit Worker(const string& name, int level, const string& boss) : name(name), level(level), boss(boss) {
-        if (!(checkString(name) && checkString(boss) && level < 0)) {
-            throw invalid_argument("Pass the right params ffs");
+    explicit Worker(const string& name, int level, const string& boss) :
+        name(name), level(level), boss(boss) {
+        if (!checkString(name) || !checkString(boss) || level < 0) {
+            throw invalid_argument("Invalid worker data");
         }
     }
 
-    static bool checkString(const string &s) {
+    static bool checkString(const string& s) {
         if (s.size() < 3 || s.size() > 50) {
             return false;
         }
 
-        for (char character: s) {
+        for (char character : s) {
             if (!((character >= 'A' && character <= 'Z') ||
                   (character >= 'a' && character <= 'z'))) {
                 return false;
             }
         }
+        return true;
     }
-
 
     string getName() const {
         return this->name;
@@ -44,8 +45,8 @@ public:
         return this->boss;
     }
 
-    int getSalary() const {
-        double total;
+    double getSalary() const {
+        double total = 0;
         for (double salary : salaries) {
             total += salary;
         }
@@ -54,17 +55,15 @@ public:
 
     virtual void AddSalary(double salary) = 0;
 
-    virtual ~Worker() {
-        cout << "abstract worker destructor";
-    };
+    virtual ~Worker() = default;
 };
 
 class OnlineWorker : public Worker {
     string platform;
-
 public:
-    explicit OnlineWorker(string name, int level, string boss, string platform) : Worker(name, level, boss),
-        platform(platform) {
+    explicit OnlineWorker(const string& name, int level, const string& boss,
+                          const string& platform) :
+        Worker(name, level, boss), platform(platform) {
         if (!checkString(platform)) {
             throw invalid_argument("Invalid platform");
         }
@@ -72,61 +71,51 @@ public:
 
     void AddSalary(double salary) override {
         if (salary < 0) {
-            throw invalid_argument("salary cannot be negative");
+            throw invalid_argument("Salary cannot be negative");
         }
         salaries.push_back(salary);
     }
 
-    bool operator>(const OnlineWorker &worker2) const {
+    bool operator>(const OnlineWorker& worker2) const {
         if (this->getSalary() > worker2.getSalary()) {
             return true;
         }
         return false;
     }
 
-    ~OnlineWorker() {
-        cout << "online worker destructor";
-    }
 };
 
 class OnsiteWorker : public Worker {
     string location;
-
 public:
-    explicit OnsiteWorker(string name, int level, string boss, string location) : Worker(name, level, boss),
-        location(location) {
+    explicit OnsiteWorker(const string& name, int level, const string& boss,
+                          const string& location) :
+        Worker(name, level, boss), location(location) {
         if (!checkString(location)) {
-            throw invalid_argument("invalid location bro");
+            throw invalid_argument("Invalid location");
         }
     }
 
     void AddSalary(double salary) override {
         if (salary < 0) {
-            throw invalid_argument("salary cannot be negative");
+            throw invalid_argument("Salary cannot be negative");
         }
         salaries.push_back(salary);
     }
 
-    bool operator>(const OnsiteWorker &worker2) {
-        if (this->getSalary() > worker2.getSalary()) {
-            return true;
-        }
-        return false;
-    }
-
-    ~OnsiteWorker() {
-        cout << "onsite worker destructor";
+    bool operator>(const OnsiteWorker& worker2) const {
+        return this->getSalary() > worker2.getSalary();
     }
 };
 
 void addSalaries(vector<OnlineWorker>& workers) {
-    for (OnlineWorker &worker: workers) {
+    for (OnlineWorker& worker:workers) {
         worker.AddSalary(500.50);
     }
 }
 
 void addSalaries(vector<OnsiteWorker>& workers) {
-    for (OnsiteWorker &worker: workers) {
+    for (OnsiteWorker& worker:workers) {
         worker.AddSalary(600.50);
     }
 }
@@ -144,7 +133,7 @@ int main() {
         OnsiteWorker("bimi",3,"bossThree","Bahlstal")
     };
 
-    Worker *workers[5];
+    Worker* workers[5];
     workers[0] = &online_workers[0];
     workers[1] = &online_workers[1];
 
