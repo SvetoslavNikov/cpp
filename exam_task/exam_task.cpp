@@ -28,25 +28,27 @@ public:
         return false;
     }
 
-    string getName() {
+    string getName() const {
         return this->name;
     }
 
-    int getLevel() {
+    int getLevel() const {
         return this->level;
     }
 
-    string getBoss() {
+    string getBoss() const {
         return this->boss;
     }
 
-    int getSalary() {
+    int getSalary() const {
         return salary;
     }
 
     virtual void AddSalary(double salary) = 0;
 
-    ~Worker();
+    virtual ~Worker() {
+        cout<<"abstract worker destructor";
+    };
 };
 
 class OnlineWorker : public Worker {
@@ -59,11 +61,15 @@ public:
         this->salary = salary;
     }
 
-    bool operator>(const OnlineWorker& worker2) {
-        if (worker2.getSalary() > this->getSalary()) {
+    bool operator>(const OnlineWorker& worker2) const {
+        if (this->getSalary() > worker2.getSalary()) {
             return true;
         }
         return false;
+    }
+
+    ~OnlineWorker() {
+        cout<<"online worker destructor";
     }
 };
 
@@ -78,10 +84,14 @@ public:
     }
 
     bool operator>(const OnsiteWorker& worker2) {
-        if (worker2.getSalary() > this->getSalary()) {
+        if (this->getSalary() > worker2.getSalary()) {
             return true;
         }
         return false;
+    }
+
+    ~OnsiteWorker() {
+        cout <<"onsite worker destructor";
     }
 };
 
@@ -99,15 +109,15 @@ void addSalaries(vector<OnsiteWorker>& workers) {
 
 int main() {
     vector<OnlineWorker> online_workers = {
-        OnlineWorker("Jim",1,"bossName","shopify"),
-        OnlineWorker("Dim",2,"bossName1","shopify"),
-        OnlineWorker("Bim",3,"bossName2","shopify")
+        OnlineWorker("Jimi",1,"bossName","shopify"),
+        OnlineWorker("Dimi",2,"bossName1","shopify"),
+        OnlineWorker("Bimi",3,"bossName2","shopify")
     };
 
     vector<OnsiteWorker> onsite_workers = {
-        OnsiteWorker("jim",1,"bossName","Bahlstal"),
-        OnsiteWorker("dim",2,"bossName2","Bahlstal"),
-        OnsiteWorker("bim",3,"bossName3","Bahlstal")
+        OnsiteWorker("jimi",1,"bossName","Bahlstal"),
+        OnsiteWorker("dimi",2,"bossName2","Bahlstal"),
+        OnsiteWorker("bimi",3,"bossName3","Bahlstal")
     };
 
     Worker* workers[5];
@@ -121,19 +131,22 @@ int main() {
     addSalaries(online_workers);
     addSalaries(onsite_workers);
 
-    int max_salary = 0;
-    Worker* worker;
-    for (OnlineWorker online_worker:online_workers) {
+    int max_salary = online_workers[0].getSalary();
+    Worker* worker = &online_workers[0];
+    for (OnlineWorker& online_worker:online_workers) {
         if (max_salary < online_worker.getSalary()) {
+            max_salary = online_worker.getSalary();
             worker = &online_worker;
         }
     }
 
     cout<<worker->getName();
 
-    int min_salary = 0;
-    for (OnsiteWorker onsite_worker:onsite_workers) {
+    int min_salary = onsite_workers[0].getSalary();
+    worker = &onsite_workers[0];
+    for (OnsiteWorker& onsite_worker:onsite_workers) {
         if (min_salary > onsite_worker.getSalary()) {
+            min_salary = onsite_worker.getSalary();
             worker = &onsite_worker;
         }
     }
@@ -141,8 +154,8 @@ int main() {
 
     string bossTeam = "bossName";
     for (Worker* worker: workers) {
-        if (bossTeam = worker->getBoss()) {
-            cout>>worker->getName();
+        if (bossTeam == worker->getBoss()) {
+            cout << worker->getName();
         }
     }
 }
