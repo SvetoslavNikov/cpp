@@ -13,12 +13,12 @@ protected:
 
 public:
     explicit Worker(const string& name, int level, const string& boss) : name(name), level(level), boss(boss) {
-        if (!(checkString(name) && checkString(boss) && level < 0)) {
+        if (!stringIsCorrect(name) || !stringIsCorrect(boss) || level < 0) {
             throw invalid_argument("Pass the right params ffs");
         }
     }
 
-    static bool checkString(const string &s) {
+    static bool stringIsCorrect(const string &s) {
         if (s.size() < 3 || s.size() > 50) {
             return false;
         }
@@ -45,8 +45,8 @@ public:
         return this->boss;
     }
 
-    int getSalary() const {
-        double total;
+    double getSalary() const {
+        double total = 0;
         for (double salary : salaries) {
             total += salary;
         }
@@ -66,7 +66,7 @@ class OnlineWorker : public Worker {
 public:
     explicit OnlineWorker(string name, int level, string boss, string platform) : Worker(name, level, boss),
         platform(platform) {
-        if (!checkString(platform)) {
+        if (!stringIsCorrect(platform)) {
             throw invalid_argument("Invalid platform");
         }
     }
@@ -96,7 +96,7 @@ class OnsiteWorker : public Worker {
 public:
     explicit OnsiteWorker(string name, int level, string boss, string location) : Worker(name, level, boss),
         location(location) {
-        if (!checkString(location)) {
+        if (!stringIsCorrect(location)) {
             throw invalid_argument("invalid location bro");
         }
     }

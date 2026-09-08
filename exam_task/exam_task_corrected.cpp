@@ -14,12 +14,12 @@ protected:
 public:
     explicit Worker(const string& name, int level, const string& boss) :
         name(name), level(level), boss(boss) {
-        if (!checkString(name) || !checkString(boss) || level < 0) {
+        if (!stringIsCorrect(name) || !stringIsCorrect(boss) || level < 0) {
             throw invalid_argument("Invalid worker data");
         }
     }
 
-    static bool checkString(const string& s) {
+    static bool stringIsCorrect(const string& s) {
         if (s.size() < 3 || s.size() > 50) {
             return false;
         }
@@ -64,7 +64,7 @@ public:
     explicit OnlineWorker(const string& name, int level, const string& boss,
                           const string& platform) :
         Worker(name, level, boss), platform(platform) {
-        if (!checkString(platform)) {
+        if (!stringIsCorrect(platform)) {
             throw invalid_argument("Invalid platform");
         }
     }
@@ -91,7 +91,7 @@ public:
     explicit OnsiteWorker(const string& name, int level, const string& boss,
                           const string& location) :
         Worker(name, level, boss), location(location) {
-        if (!checkString(location)) {
+        if (!stringIsCorrect(location)) {
             throw invalid_argument("Invalid location");
         }
     }
