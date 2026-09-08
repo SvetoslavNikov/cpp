@@ -29,6 +29,7 @@ public:
                 return false;
             }
         }
+        return true;
     }
 
 
@@ -77,7 +78,7 @@ public:
         salaries.push_back(salary);
     }
 
-    bool operator>(const OnlineWorker &worker2) const {
+    bool operator>(const OnlineWorker& worker2) const {
         if (this->getSalary() > worker2.getSalary()) {
             return true;
         }
@@ -107,7 +108,7 @@ public:
         salaries.push_back(salary);
     }
 
-    bool operator>(const OnsiteWorker &worker2) {
+    bool operator>(const OnsiteWorker& worker2) {
         if (this->getSalary() > worker2.getSalary()) {
             return true;
         }
@@ -144,7 +145,7 @@ int main() {
         OnsiteWorker("bimi",3,"bossThree","Bahlstal")
     };
 
-    Worker *workers[5];
+    Worker* workers[5];
     workers[0] = &online_workers[0];
     workers[1] = &online_workers[1];
 
