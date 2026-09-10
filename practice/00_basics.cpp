@@ -3,6 +3,13 @@ using namespace std;
 
 int main() {
 
+
+//     T*     → pointer: "I have an address"
+//
+// T&     → lvalue reference: "another name for this existing object"
+//
+// T&&    → rvalue reference: "another name for this temporary/movable object"
+
     // ============================================================
     // 1. & in a DECLARATION = REFERENCE
     // ============================================================
