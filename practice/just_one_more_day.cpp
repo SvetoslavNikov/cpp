@@ -1,41 +1,29 @@
-#include <iostream>
-#include <memory>
-#include <string>
-#include <utility>
+#include<iostream>
+#include<memory>
+#include<string>
 
-using namespace std;
-
-class Vehicle {
+class User {
+    std::string name;
 public:
-    Vehicle() {
-        cout<<"vehicle constructor called"<<endl;
-    }
-    virtual void honk() const = 0;
+    explicit User(std::string n): name(std::move(n)) {
 
-    virtual ~Vehicle() {
-        cout<<"vehicle destructor called"<<endl;
+    }
+
+    void hello() const {std::cout<<name<<'\n';}
+
+    ~User() {
+        std::cout<<"hey little f";
     }
 };
 
-class Car : public Vehicle {
-public:
-    Car() {
-        cout<<"car constructor called";
-    }
-    void honk() const override { cout << "car\n"; }
-    ~Car() { cout << "Car destructor\n"; }
-};
-
-Vehicle& destroy(Vehicle& vehicle) {
-    Car c = vehicle;
-    return c;
+void createUser() {
+    auto p = std::make_unique<User>("Maria");
 }
 
 int main() {
-
-    Car c{};
-    Vehicle& v = c;
-    cout<<"hey";
-    Vehicle& x = destroy(v);
+ createUser();
+    //double free
+    //use after free
+    //memory leak
 
 }

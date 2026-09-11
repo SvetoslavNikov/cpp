@@ -27,6 +27,11 @@ public:
     bool operator<=(const MyType& other) const;
     bool operator>=(const MyType& other) const;
 
+    // Stream operators
+    friend std::ostream& operator<<(std::ostream& out, const MyType& obj);
+    friend std::istream& operator>>(std::istream& in, MyType& obj);
+
+
     // Assignment
     MyType& operator=(const MyType& other);
     MyType& operator+=(const MyType& other);
@@ -71,7 +76,5 @@ public:
     // Conversion
     operator bool() const;
 
-    // Stream operators
-    friend std::ostream& operator<<(std::ostream& out, const MyType& obj);
-    friend std::istream& operator>>(std::istream& in, MyType& obj);
+
 };
