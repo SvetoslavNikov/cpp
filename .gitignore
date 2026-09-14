@@ -21,4 +21,3 @@ exam_task/*
 !exam_task/*.h
 !exam_task/*.hpp
 !exam_task/*.md
-!exam_task/README.md
