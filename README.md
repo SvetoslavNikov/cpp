@@ -1,6 +1,4 @@
-# C++ / OOP exam prep
-
-Course **Програмни езици** (проф. Наков). Theme numbers match the conspect.
+# C++
 
 | Path | What |
 |---|---|
