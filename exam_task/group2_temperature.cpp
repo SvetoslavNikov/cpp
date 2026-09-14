@@ -69,6 +69,10 @@ ostream& operator<<(ostream& os, const PatientVisit& patient) {
 }
 
 int main() {
+    ConverterImplementation converter;
+    cout << "32 F = " << converter.convert(32.0) << " C\n";
+    cout << "212 F = " << converter.convert(212.0) << " C\n";
+
     vector<PatientVisit> patients;
 
     patients.push_back(
@@ -87,10 +91,6 @@ int main() {
         if (patient.getComplains() == "Complains") {
             cout << patient << endl;
         }
-    }
-
-    for (const auto& patient : patients) {
-
     }
 
     return 0;

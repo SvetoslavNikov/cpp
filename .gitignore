@@ -1,0 +1,24 @@
+# Compiled artifacts
+*.o
+*.obj
+*.exe
+*.out
+*.app
+a.out
+*.dSYM/
+
+# Compiled programs next to sources (keep only source and docs)
+practice/*
+!practice/*/
+!practice/*.cpp
+!practice/*.h
+!practice/*.hpp
+!practice/*.md
+
+exam_task/*
+!exam_task/*/
+!exam_task/*.cpp
+!exam_task/*.h
+!exam_task/*.hpp
+!exam_task/*.md
+!exam_task/README.md

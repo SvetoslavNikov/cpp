@@ -27,9 +27,7 @@ public:
         return artists;
     }
 
-    virtual ~Song() {
-        std::cout << "Song destroyed" << std::endl;
-    }
+    virtual ~Song() = default;
 };
 
 class SingleSong : public Song {
@@ -46,10 +44,6 @@ public:
 
     const std::string& getReleaseDate() const {
         return releaseDate;
-    }
-
-    ~SingleSong() override {
-        std::cout << "Single song destroyed" << std::endl;
     }
 
     friend std::ostream& operator<<(std::ostream& os,
@@ -83,10 +77,6 @@ public:
 
     const std::string& getAlbumName() const {
         return albumName;
-    }
-
-    ~AlbumSong() override {
-        std::cout << "Album song destroyed" << std::endl;
     }
 
     friend std::ostream& operator<<(std::ostream& os,

@@ -54,13 +54,11 @@ public:
         return instanceCount;
     }
 
-    void addServers(const Server& server) {
-        servers.push_back(server);
-    }
+    virtual void addServers(const Server& server) = 0;
 
     DataCenter& operator+(DataCenter& other) {
         for (const Server& server : other.servers) {
-            servers.push_back(server);
+            addServers(server);
         }
         other.servers.clear();
         return *this;
@@ -104,6 +102,10 @@ public:
     string getProvider() const {
         return provider;
     }
+
+    void addServers(const Server& server) override {
+        servers.push_back(server);
+    }
 };
 
 class LocalDataCenter : public DataCenter {
@@ -120,6 +122,10 @@ public:
 
     string getBuilding() const {
         return building;
+    }
+
+    void addServers(const Server& server) override {
+        servers.push_back(server);
     }
 };
 
@@ -143,12 +149,13 @@ int main() {
     network[3] = &localCenters[1];
     network[4] = &localCenters[2];
 
-    cloudCenters[0].addServers(Server("web01"));
-    cloudCenters[0].addServers(Server("web02"));
-    cloudCenters[1].addServers(Server("db01"));
-    localCenters[0].addServers(Server("app01"));
-    localCenters[1].addServers(Server("app02"));
-    localCenters[1].addServers(Server("app03"));
+    network[0]->addServers(Server("web01"));
+    network[0]->addServers(Server("web02"));
+    network[1]->addServers(Server("db01"));
+    network[2]->addServers(Server("app01"));
+    network[3]->addServers(Server("app02"));
+    network[3]->addServers(Server("app03"));
+    network[4]->addServers(Server("app04"));
 
     cout << "Before cloud +: " << cloudCenters[0].getName() << " has "
          << cloudCenters[0].getServerCount() << " servers, "
