@@ -1,25 +1,46 @@
+#include <condition_variable>
+#include <mutex>
+#include <thread>
 #include <iostream>
-#include <concepts>
 
-using namespace std;
+std::mutex m;
+std::condition_variable cv;
+bool ready = false;
 
-// Ограничител: T трябва да бъде числов тип
-template <typename T>
-concept Number = std::integral<T> || std::floating_point<T>;
+void consumer(int id) {
+    std::unique_lock<std::mutex> lock(m);
 
-// Функцията може да се използва само с Number
-template <Number T>
-T square(T x)
-{
-    return x * x;
+    std::cout << "C" << id << ": ready = " << ready << "\n";
+
+    std::cout << "C" << id << ": waiting...\n";
+
+    cv.wait(lock, [] { return ready; });
+
+    // wait() woke up AND reacquired the mutex
+    std::cout << "C" << id << ": woke up, ready = "
+              << ready << "\n";
+
+    std::cout << "C" << id << ": Consumed\n";
 }
 
-int main()
-{
-    cout << square(5) << endl;       // int
-    cout << square(2.5) << endl;     // double
+void producer() {
+    {
+        std::lock_guard<std::mutex> lock(m);
 
-    // cout << square("Hello") << endl; // Грешка: string не е Number
+        std::cout << "P: setting ready = true\n";
+        ready = false;
+    } // mutex released
 
-    return 0;
+    std::cout << "P: notify_all()\n";
+    cv.notify_one();
+}
+
+int main() {
+    std::thread c(consumer, 1);
+    std::thread c1(consumer, 2);
+    std::thread p(producer);
+
+    c.join();
+    c1.join();
+    p.join();
 }

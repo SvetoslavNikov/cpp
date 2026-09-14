@@ -25,9 +25,16 @@ int main() {
     std::cout << op(2, 3) << "\n";           // 6
 
     // async + lambda
-    auto fut = std::async(std::launch::async, [] {
+    std::future<int> fut = std::async(std::launch::async, [] {
         return 40 + 2;
     });
+
+    auto construct_my_name = std::async(std::launch::async,[] {
+        return "svetlio petlio";
+    });
+
+    std::cout << construct_my_name.get()<<"\n";
+
     std::cout << fut.get() << "\n";          // 42  (чака)
 
     // безопасно: копие на x

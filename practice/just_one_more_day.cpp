@@ -27,6 +27,13 @@ public:
     virtual ~Visitor() = default;
 };
 
+
+
+
+
+
+
+
 // ==================== Companies ====================
 
 class FintechCompany : public Company {
@@ -49,6 +56,7 @@ public:
         visitor.visit(*this);
     }
 };
+
 
 // ==================== Concrete Visitor ====================
 

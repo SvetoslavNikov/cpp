@@ -23,6 +23,9 @@ void ok() {
 
 int main() {
     // race — резултатът често < 200000 (UB, само за demo)
+    std::thread t1([]{for (int i = 0; i<100; ++i){ std::cout<<"huq mi";}});
+
+
     std::thread r1(race), r2(race);
     r1.join(); r2.join();
     std::cout << "plain:  " << plain << "  (искаме 200000)\n";

@@ -40,3 +40,5 @@ int main() {
     w1.join(); w2.join();
     std::cout << "balance: " << balance << "\n";  // 20 (само 1 теглене)
 }
+
+
